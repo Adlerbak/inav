@@ -86,15 +86,20 @@ static bool busDevInit_I2C(busDevice_t * dev, const busDeviceDescriptor_t * desc
 #ifdef USE_SPI
 static bool busDevInit_SPI(busDevice_t * dev, const busDeviceDescriptor_t * descriptor, resourceOwner_e owner)
 {
+    // Init the low-level bus hardware (host)
+    if (!spiBusInitHost(dev)) {
+        return false;
+    }
+
     dev->busType = descriptor->busType;
     dev->irqPin = IOGetByTag(descriptor->irqPin);
     dev->busdev.spi.spiBus = descriptor->busdev.spi.spiBus;
     dev->busdev.spi.csnPin = IOGetByTag(descriptor->busdev.spi.csnPin);
     if (dev->busdev.spi.csnPin) {
+        // Init CSN pin
         IOInit(dev->busdev.spi.csnPin, owner, RESOURCE_SPI_CS, 0);
         IOConfigGPIO(dev->busdev.spi.csnPin, SPI_IO_CS_CFG);
         IOHi(dev->busdev.spi.csnPin);
-        return true;
     }
 
     return false;

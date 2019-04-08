@@ -29,6 +29,20 @@
 #include "drivers/bus_spi.h"
 #include "drivers/time.h"
 
+bool spiBusInitHost(const busDevice_t * dev)
+{
+    SPI_TypeDef * instance = spiInstanceByDevice(dev->busdev.spi.spiBus);
+    if (instance == NULL) {
+        return false;
+    }
+
+    const bool spiLeadingEdge = (dev->flags & DEVFLAGS_SPI_MODE_0);
+
+    spiInitDevice(dev->busdev.spi.spiBus, spiLeadingEdge);
+
+    return true;
+}
+
 void spiBusSelectDevice(const busDevice_t * dev)
 {
     IOLo(dev->busdev.spi.csnPin);

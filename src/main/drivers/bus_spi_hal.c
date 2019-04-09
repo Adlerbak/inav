@@ -102,7 +102,7 @@ static spiDevice_t spiHardwareMap[] = {
 #ifdef USE_SPI_DEVICE_4
     { .dev = SPI4, .nss = IO_TAG(SPI4_NSS_PIN), .sck = IO_TAG(SPI4_SCK_PIN), .miso = IO_TAG(SPI4_MISO_PIN), .mosi = IO_TAG(SPI4_MOSI_PIN), .rcc = RCC_APB2(SPI4), .af = GPIO_AF5_SPI4, .divisorMap = spiDivisorMapSlow }
 #else
-    { .dev = NULL },    // No SPI4
+    { .dev = NULL }     // No SPI4
 #endif
 };
 
